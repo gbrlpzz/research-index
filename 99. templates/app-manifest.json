@@ -1,0 +1,19 @@
+{
+  "name": "[App Name]",
+  "slug": "[app-slug]",
+  "version": "0.1.0",
+  "description": "[Short description of the application]",
+  "author": "Gabriele Pizzi",
+  "license": "MIT",
+  "repository": "https://github.com/gbrlpzz/[app-slug]",
+  "stack": [
+    "React",
+    "TypeScript",
+    "Vite"
+  ],
+  "status": "prototype",
+  "deployment": {
+    "url": "https://[app-slug].vercel.app",
+    "platform": "Vercel"
+  }
+}
