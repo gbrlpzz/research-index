@@ -7,28 +7,28 @@
 echo "Initializing research-index structure..."
 
 # Create folder structure
-mkdir -p refs outputs code datasets notebooks apps catalogue
+mkdir -p "00. catalogue" "01. refs" "02. outputs" "03. datasets" "04. notebooks" "05. apps" "06. code" "99. templates"
 
 # Create initial files if they don't exist
-[ ! -f refs/references.bib ] && touch refs/references.bib
-[ ! -f refs/README.md ] && echo "# Public Bibliography" > refs/README.md && echo "Store your public references.bib here." >> refs/README.md
+[ ! -f "01. refs/references.bib" ] && touch "01. refs/references.bib"
+[ ! -f "01. refs/README.md" ] && echo "# Public Bibliography" > "01. refs/README.md" && echo "Store your public references.bib here." >> "01. refs/README.md"
 
-[ ! -f outputs/README.md ] && echo "# Research Outputs" > outputs/README.md && echo "Exploratory analyses, essays, and deep dives go here." >> outputs/README.md
+[ ! -f "02. outputs/README.md" ] && echo "# Research Outputs" > "02. outputs/README.md" && echo "Exploratory analyses, essays, and deep dives go here." >> "02. outputs/README.md"
 
-[ ! -f code/README.md ] && echo "# Code Snippets" > code/README.md && echo "Small scripts and utilities go here." >> code/README.md
+[ ! -f "06. code/README.md" ] && echo "# Code Snippets" > "06. code/README.md" && echo "Small scripts and utilities go here." >> "06. code/README.md"
 
-[ ! -f datasets/README.md ] && echo "# Datasets" > datasets/README.md && echo "Small public datasets go here." >> datasets/README.md
+[ ! -f "03. datasets/README.md" ] && echo "# Datasets" > "03. datasets/README.md" && echo "Small public datasets go here." >> "03. datasets/README.md"
 
-[ ! -f notebooks/README.md ] && echo "# Notebooks" > notebooks/README.md && echo "Reproducible notebooks go here." >> notebooks/README.md
+[ ! -f "04. notebooks/README.md" ] && echo "# Notebooks" > "04. notebooks/README.md" && echo "Reproducible notebooks go here." >> "04. notebooks/README.md"
 
-[ ! -f apps/README.md ] && echo "# Apps" > apps/README.md && echo "Tiny demos and prototypes go here." >> apps/README.md
+[ ! -f "05. apps/README.md" ] && echo "# Apps" > "05. apps/README.md" && echo "Tiny demos and prototypes go here." >> "05. apps/README.md"
 
 # Create Catalogue files if they don't exist
-[ ! -f catalogue/README.md ] && echo "# Research Catalogue" > catalogue/README.md
-[ ! -f catalogue/papers.md ] && echo "## Papers" > catalogue/papers.md
-[ ! -f catalogue/apps.md ] && echo "## Apps" > catalogue/apps.md
-[ ! -f catalogue/datasets.md ] && echo "## Datasets" > catalogue/datasets.md
-[ ! -f catalogue/notebooks.md ] && echo "## Notebooks" > catalogue/notebooks.md
+[ ! -f "00. catalogue/README.md" ] && echo "# Research Catalogue" > "00. catalogue/README.md"
+[ ! -f "00. catalogue/papers.md" ] && echo "## Papers" > "00. catalogue/papers.md"
+[ ! -f "00. catalogue/apps.md" ] && echo "## Apps" > "00. catalogue/apps.md"
+[ ! -f "00. catalogue/datasets.md" ] && echo "## Datasets" > "00. catalogue/datasets.md"
+[ ! -f "00. catalogue/notebooks.md" ] && echo "## Notebooks" > "00. catalogue/notebooks.md"
 
 # Create main README if it doesn't exist
 if [ ! -f README.md ]; then

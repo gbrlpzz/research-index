@@ -16,10 +16,25 @@ YEAR=$(date +%Y)
 REPO_NAME="$TYPE-$YEAR-$SLUG"
 INDEX_DIR=$(pwd)
 BASE_DIR="$INDEX_DIR/.."
+TEMPLATES_DIR="$INDEX_DIR/99. templates"
+MARKERS_DIR="$TEMPLATES_DIR/markers"
 
-# Ensure we are in research-index
-if [ ! -d "catalogue" ] || [ ! -d "refs" ]; then
-    echo "Error: You must run this script from the root of the research-index repository."
+# Detect Catalogue and Refs directories
+if [ -d "00. catalogue" ]; then
+    CATALOGUE_DIR="00. catalogue"
+elif [ -d "catalogue" ]; then
+    CATALOGUE_DIR="catalogue"
+else
+    echo "Error: Catalogue directory not found (looked for 'catalogue' or '00. catalogue')."
+    exit 1
+fi
+
+if [ -d "01. refs" ]; then
+    REFS_DIR="01. refs"
+elif [ -d "refs" ]; then
+    REFS_DIR="refs"
+else
+    echo "Error: Refs directory not found (looked for 'refs' or '01. refs')."
     exit 1
 fi
 
@@ -47,27 +62,48 @@ echo "" >> README.md
 echo "Type: $TYPE" >> README.md
 echo "Year: $YEAR" >> README.md
 
-# Type-specific structure
+# Type-specific structure and templates
 case $TYPE in
     paper)
-        mkdir -p figures refs
+        mkdir -p figures refs data/raw data/processed
         touch main.tex
-        echo "# Reproducibility" > REPRODUCIBILITY.md
-        if [ -f "$INDEX_DIR/refs/references.bib" ]; then
-            cp "$INDEX_DIR/refs/references.bib" refs/
+        
+        # Copy reproducibility checklist
+        if [ -f "$TEMPLATES_DIR/reproducibility.md" ]; then
+            cp "$TEMPLATES_DIR/reproducibility.md" REPRODUCIBILITY.md
+        else
+            echo "# Reproducibility" > REPRODUCIBILITY.md
+        fi
+        
+        if [ -f "$INDEX_DIR/$REFS_DIR/references.bib" ]; then
+            cp "$INDEX_DIR/$REFS_DIR/references.bib" refs/
             echo "Copied references.bib from research-index"
         else
             touch refs/references.bib
         fi
         mkdir -p .github/workflows
         echo "name: LaTeX Build" > .github/workflows/latex.yml
+
+        # Copy markers
+        [ -f "$MARKERS_DIR/data/raw/README.md" ] && cp "$MARKERS_DIR/data/raw/README.md" data/raw/
+        [ -f "$MARKERS_DIR/data/processed/README.md" ] && cp "$MARKERS_DIR/data/processed/README.md" data/processed/
+        [ -f "$MARKERS_DIR/figures/README.md" ] && cp "$MARKERS_DIR/figures/README.md" figures/
         ;;
     app)
         mkdir -p src public
+        # Copy app manifest
+        if [ -f "$TEMPLATES_DIR/app-manifest.json" ]; then
+            cp "$TEMPLATES_DIR/app-manifest.json" manifest.json
+        fi
         ;;
     dataset)
         mkdir -p raw processed
-        echo "# Dataset Documentation" > DATA_DICTIONARY.md
+        # Copy dataset metadata
+        if [ -f "$TEMPLATES_DIR/dataset-metadata.md" ]; then
+            cp "$TEMPLATES_DIR/dataset-metadata.md" METADATA.md
+        else
+            echo "# Dataset Metadata" > METADATA.md
+        fi
         ;;
     notebook)
         mkdir -p notebooks
@@ -89,15 +125,17 @@ git add .
 git commit -m "Initial commit: $REPO_NAME"
 
 # Update Catalogue in research-index
-CATALOGUE_FILE="$INDEX_DIR/catalogue/${TYPE}s.md"
+CATALOGUE_FILE="$INDEX_DIR/$CATALOGUE_DIR/${TYPE}s.md"
 
 if [ -f "$CATALOGUE_FILE" ]; then
-    echo "- [$REPO_NAME](../../$REPO_NAME) ($YEAR)" >> "$CATALOGUE_FILE"
+    # Append with a newline to ensure it doesn't mess up previous lines
+    # Using printf to ensure newline is handled correctly
+    printf "\n- [$REPO_NAME](../../$REPO_NAME) ($YEAR)" >> "$CATALOGUE_FILE"
     echo "Updated catalogue: $CATALOGUE_FILE"
     
     # Commit catalogue update
     cd "$INDEX_DIR" || exit
-    git add "catalogue/${TYPE}s.md"
+    git add "$CATALOGUE_DIR/${TYPE}s.md"
     git commit -m "Add $REPO_NAME to catalogue"
     # git push # Uncomment if you want to auto-push index updates
     cd "$BASE_DIR/$REPO_NAME" || exit

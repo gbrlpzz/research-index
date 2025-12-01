@@ -57,18 +57,20 @@ It stores all *non-paper* research artifacts that are ready to share.
 * documentation
 * catalogues linking all other repos
 
-### Folder layout:
+### **3.1 Directory Structure**
 
 ```
 research-index/
-  refs/            ← public references.bib
-  outputs/         ← analyses, essays, deep dives
-  code/            ← small scripts or utilities
-  datasets/        ← small public datasets
-  notebooks/       ← reproducible notebooks
-  apps/            ← tiny demos (not full apps)
-  catalogue/       ← lists of all artifacts
+  00. catalogue/     # Index of all artifact repos
+  01. refs/          # Public bibliography
+  02. outputs/       # Analyses, deep dives, essays
+  03. datasets/      # Small public datasets
+  04. notebooks/     # Reproducible notebooks
+  05. apps/          # Small app demos (not full applications)
+  06. code/          # Small code utilities
+  99. templates/     # Standard metadata templates & markers
   README.md
+  SYSTEM_GUIDE.md
 ```
 
 ### This repo is:
